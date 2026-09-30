@@ -1,0 +1,560 @@
+<html><head><meta charset='utf-8'>
+<style>body{font-family:ui-monospace,Consolas,monospace;font-size:13px;margin:24px}table{border-collapse:collapse;margin:8px 0 20px}td,th{border:1px solid #ccc;padding:4px 8px;text-align:left;vertical-align:top}th{background:#f2f2f2}h1{font-size:20px}h2{font-size:16px;margin-top:28px}h3{font-size:14px}</style></head><body>
+<h1>Damage Report — Raw Profile</h1>
+<p><b>Checks run:</b> 96 &nbsp;|&nbsp; <b>Checks with findings:</b> 6 &nbsp;|&nbsp; <b>Severity:</b> MEDIUM: 4 | HIGH: 2<br>
+Generated: 2026-09-30 07:47 | scope: raw tables as ingested — nothing cleaned yet</p>
+<h2>products</h2>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>check_id</th>
+      <th>check_name</th>
+      <th>severity</th>
+      <th>rows_affected</th>
+      <th>pct</th>
+      <th>examples</th>
+      <th>details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CNF-01</td>
+      <td>non-snake_case column names</td>
+      <td>MEDIUM</td>
+      <td>5</td>
+      <td>0.000</td>
+      <td></td>
+      <td>Product_ID, Product_Name, Category_ID, Launch_Date, Price</td>
+    </tr>
+    <tr>
+      <td>DUP-02</td>
+      <td>duplicate natural key: Product_Name</td>
+      <td>MEDIUM</td>
+      <td>2</td>
+      <td>2.247</td>
+      <td>P-21 | HomePod mini | CAT-2 | 2022-04-05 | 438 ;; P-75 | HomePod mini | CAT-9 | 2023-06-22 | 266</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<h2>sales</h2>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>check_id</th>
+      <th>check_name</th>
+      <th>severity</th>
+      <th>rows_affected</th>
+      <th>pct</th>
+      <th>examples</th>
+      <th>details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TIME-01</td>
+      <td>sale before product launch</td>
+      <td>HIGH</td>
+      <td>493143</td>
+      <td>47.408</td>
+      <td>JG-46890 | 05-07-2021 | ST-26 | P-79 | 5 | 2021-07-05 00:00:00 | P-79 | 2024-05-25 00:00:00 ;; XJ-1731 | 20-07-2022 | ST-15 | P-24 | 9 | 2022-07-20 00:00:00 | P-24 | 2022-11-27 00:00:00 ;; FG-95080 | 18-03-2022 | ST-35 | P-69 | 7 | 2022-03-18 00:00:00 | P-69 | 2024-11-04 00:00:00</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<h2>stores</h2>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>check_id</th>
+      <th>check_name</th>
+      <th>severity</th>
+      <th>rows_affected</th>
+      <th>pct</th>
+      <th>examples</th>
+      <th>details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CNF-01</td>
+      <td>non-snake_case column names</td>
+      <td>MEDIUM</td>
+      <td>4</td>
+      <td>0.0</td>
+      <td></td>
+      <td>Store_ID, Store_Name, City, Country</td>
+    </tr>
+    <tr>
+      <td>DUP-01</td>
+      <td>duplicate natural key: Store_Name + City</td>
+      <td>MEDIUM</td>
+      <td>12</td>
+      <td>16.0</td>
+      <td>ST-17 | Apple Covent Garden | London | United Kingdom ;; ST-18 | Apple Champs-Elysees | Paris | France ;; ST-41 | Apple Central World | Bangkok | Thailand</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<h2>warranty</h2>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>check_id</th>
+      <th>check_name</th>
+      <th>severity</th>
+      <th>rows_affected</th>
+      <th>pct</th>
+      <th>examples</th>
+      <th>details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TIME-02</td>
+      <td>claim before sale</td>
+      <td>HIGH</td>
+      <td>2687</td>
+      <td>8.957</td>
+      <td>CL-75561 | 2024-01-24 | JB-46303 | Completed | 2024-01-24 00:00:00 | 2024-08-31 00:00:00 ;; CL-29490 | 2024-03-14 | UJ-07947 | Completed | 2024-03-14 00:00:00 | 2024-05-08 00:00:00 ;; CL-23879 | 2024-05-04 | GN-099683 | In Progress | 2024-05-04 00:00:00 | 2024-07-22 00:00:00</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<h2>Value censuses (low-cardinality columns)</h2>
+<h3>warranty.repair_status — 4 distinct values</h3>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rows</th>
+    </tr>
+    <tr>
+      <th>repair_status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>In Progress</th>
+      <td>7611</td>
+    </tr>
+    <tr>
+      <th>Pending</th>
+      <td>7566</td>
+    </tr>
+    <tr>
+      <th>Completed</th>
+      <td>7466</td>
+    </tr>
+    <tr>
+      <th>Rejected</th>
+      <td>7357</td>
+    </tr>
+  </tbody>
+</table>
+<h3>category.category_name — 10 distinct values</h3>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rows</th>
+    </tr>
+    <tr>
+      <th>category_name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Laptop</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Audio</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Tablet</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Smartphone</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Wearable</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Streaming Device</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Desktop</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Subscription Service</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Smart Speaker</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Accessories</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<h3>stores.Country — 19 distinct values</h3>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rows</th>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>United States</th>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>China</th>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>Australia</th>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>Japan</th>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>UAE</th>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>Canada</th>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>United Kingdom</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>France</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>Germany</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Thailand</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Singapore</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Mexico</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Italy</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Colombia</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>South Korea</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Austria</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Spain</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Netherlands</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Taiwan</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<h3>stores.City — 47 distinct values</h3>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rows</th>
+    </tr>
+    <tr>
+      <th>City</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>London</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>Paris</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>Dubai</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>New York</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Tokyo</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Bangkok</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Singapore</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Melbourne</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Mexico City</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Chicago</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Los Angeles</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Shanghai</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Beijing</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Toronto</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Bogota</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Seoul</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>San Francisco</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Portland</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Cupertino</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Costa Mesa</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Honolulu</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Philadelphia</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Glendale</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Brooklyn</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Vienna</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Barcelona</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Milan</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Rome</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Berlin</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Cologne</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Amsterdam</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Munich</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Fukuoka</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Chengdu</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Taipei</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Hong Kong</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Macau</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Kyoto</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Ottawa</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Montreal</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Burnaby</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Sydney</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Brisbane</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Bondi</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Cheltenham</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Abu Dhabi</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Kumamoto</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<h3>sales.quantity — 10 distinct values</h3>
+<table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rows</th>
+    </tr>
+    <tr>
+      <th>quantity</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>104349</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>104305</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>104299</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>104270</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>104172</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>103949</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>103891</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>103782</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>103728</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>103455</td>
+    </tr>
+  </tbody>
+</table>
+</body></html>

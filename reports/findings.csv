@@ -1,0 +1,7 @@
+table,check_id,check_name,severity,rows_affected,pct,examples,details
+products,CNF-01,non-snake_case column names,MEDIUM,5,0.0,,"Product_ID, Product_Name, Category_ID, Launch_Date, Price"
+products,DUP-02,duplicate natural key: Product_Name,MEDIUM,2,2.247,P-21 | HomePod mini | CAT-2 | 2022-04-05 | 438 ;; P-75 | HomePod mini | CAT-9 | 2023-06-22 | 266,
+sales,TIME-01,sale before product launch,HIGH,493143,47.408,JG-46890 | 05-07-2021 | ST-26 | P-79 | 5 | 2021-07-05 00:00:00 | P-79 | 2024-05-25 00:00:00 ;; XJ-1731 | 20-07-2022 | ST-15 | P-24 | 9 | 2022-07-20 00:00:00 | P-24 | 2022-11-27 00:00:00 ;; FG-95080 | 18-03-2022 | ST-35 | P-69 | 7 | 2022-03-18 00:00:00 | P-69 | 2024-11-04 00:00:00,
+stores,CNF-01,non-snake_case column names,MEDIUM,4,0.0,,"Store_ID, Store_Name, City, Country"
+stores,DUP-01,duplicate natural key: Store_Name + City,MEDIUM,12,16.0,ST-17 | Apple Covent Garden | London | United Kingdom ;; ST-18 | Apple Champs-Elysees | Paris | France ;; ST-41 | Apple Central World | Bangkok | Thailand,
+warranty,TIME-02,claim before sale,HIGH,2687,8.957,CL-75561 | 2024-01-24 | JB-46303 | Completed | 2024-01-24 00:00:00 | 2024-08-31 00:00:00 ;; CL-29490 | 2024-03-14 | UJ-07947 | Completed | 2024-03-14 00:00:00 | 2024-05-08 00:00:00 ;; CL-23879 | 2024-05-04 | GN-099683 | In Progress | 2024-05-04 00:00:00 | 2024-07-22 00:00:00,

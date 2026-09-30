@@ -1,0 +1,6 @@
+.venv/
+data/raw/        # regenerable; checksums + download link live in README
+data/clean/
+data/interim/
+data/quarantine/
+__pycache__/

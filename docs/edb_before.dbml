@@ -1,0 +1,30 @@
+Table category {
+  category_id int [pk]
+  category_name varchar
+}
+Table products {
+  Product_ID int [pk]
+  Product_Name varchar
+  Category_ID int [ref: > category.category_id]
+  Launch_Date varchar [note: 'assumed date — unvalidated']
+  Price varchar [note: 'assumed numeric — unvalidated']
+}
+Table sales {
+  sale_id int [pk]
+  sale_date varchar [note: 'assumed date — unvalidated']
+  store_id int [ref: > stores.Store_ID]
+  product_id int [ref: > products.Product_ID]
+  quantity varchar [note: 'assumed integer — unvalidated']
+}
+Table stores {
+  Store_ID int [pk]
+  Store_Name varchar
+  City varchar
+  Country varchar
+}
+Table warranty {
+  claim_id int [pk]
+  claim_date varchar [note: 'assumed date — unvalidated']
+  sale_id int [ref: > sales.sale_id]
+  repair_status varchar
+}
