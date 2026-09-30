@@ -1,0 +1,13 @@
+metric,table,pandas,mysql,status
+rows_raw,category,10.0,10.0,OK
+rows_raw,stores,75.0,75.0,OK
+rows_raw,products,89.0,89.0,OK
+rows_raw,sales,1040200.0,1040200.0,OK
+rows_raw,warranty,30000.0,30000.0,OK
+rows_clean,category,10.0,10.0,OK
+rows_clean,stores,75.0,75.0,OK
+rows_clean,products,89.0,89.0,OK
+rows_clean,sales,1040200.0,1040200.0,OK
+rows_clean,warranty,30000.0,30000.0,OK
+units_clean,sales,5721344.0,5721344.0,OK
+revenue_clean,sales,6166293030.0,6166293030.0,OK

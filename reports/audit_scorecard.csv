@@ -1,0 +1,14 @@
+check_id,check_name,before_clean,after_clean,flagged_after,unaccounted,status
+TIME-01,sale before product launch,493143,493143,493143,0,FLAGGED
+TIME-02,claim before sale,2687,2687,2687,0,FLAGGED
+DUP-01,duplicate stores on name + city,12,6,6,0,FLAGGED
+DUP-02,duplicate products on name,2,1,1,0,FLAGGED
+ID-01,PK null/empty: sales.sale_id,0,0,0,0,CLEAN
+ID-02,PK duplicate: sales.sale_id,0,0,0,0,CLEAN
+FK-01,orphan sales.product_id -> products,0,0,0,0,CLEAN
+FK-02,orphan sales.store_id -> stores,0,0,0,0,CLEAN
+FK-03,orphan products.Category_ID -> category,0,0,0,0,CLEAN
+FK-04,orphan warranty.sale_id -> sales,0,0,0,0,CLEAN
+DOM-01,quantity non-numeric / <= 0,0,0,0,0,CLEAN
+DOM-02,repair_status outside canonical 4,0,0,0,0,CLEAN
+TIME-03,sale_date in the future,0,0,0,0,CLEAN
