@@ -1,0 +1,8 @@
+metric,table,raw,clean,quarantined,variance,status,note
+rows,category,10.0,10.0,0.0,0.0,OK,
+rows,products,89.0,89.0,0.0,0.0,OK,
+rows,sales,1040200.0,1040200.0,0.0,0.0,OK,
+rows,stores,75.0,75.0,0.0,0.0,OK,
+rows,warranty,30000.0,30000.0,0.0,0.0,OK,
+units,sales,5721344.0,5721344.0,0.0,0.0,OK,
+revenue,sales,6166293030.0,6166293030.0,0.0,0.0,OK,"quantity x price, joined to products"

@@ -1,0 +1,17 @@
+run_id,ts,stage,rule_id,check_id,action,table,rows_affected,rows_total,details
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-001,,FIX,products,0,89,"renamed columns: {'Product_ID': 'product_id', 'Product_Name': 'product_name', 'Category_ID': 'category_id', 'Launch_Date': 'launch_date', 'Price': 'price'}"
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-001,,FIX,stores,0,75,"renamed columns: {'Store_ID': 'store_id', 'Store_Name': 'store_name', 'City': 'city', 'Country': 'country'}"
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-002,,FIX,category,0,10,trimmed leading/trailing whitespace
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-002,,FIX,products,0,89,trimmed leading/trailing whitespace
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-002,,FIX,sales,0,1040200,trimmed leading/trailing whitespace
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-002,,FIX,stores,0,75,trimmed leading/trailing whitespace
+20260930T213843Z,2026-09-30T21:38:45+00:00,conform,R-CNF-002,,FIX,warranty,0,30000,trimmed leading/trailing whitespace
+20260930T213843Z,2026-09-30T21:38:48+00:00,type,R-TYPE-001,,FIX,sales,0,1040200,sale_date null or not parseable as %d-%m-%Y
+20260930T213843Z,2026-09-30T21:38:48+00:00,type,R-TYPE-002,,FIX,warranty,0,30000,claim_date null or not parseable as %Y-%m-%d
+20260930T213843Z,2026-09-30T21:38:48+00:00,type,R-TYPE-003,,FIX,products,0,89,launch_date null or not parseable as %Y-%m-%d
+20260930T213843Z,2026-09-30T21:38:49+00:00,type,R-TYPE-004,,FIX,sales,0,1040200,quantity null or not parseable as int32 or domain >= 1 violated or non-integer value
+20260930T213843Z,2026-09-30T21:38:49+00:00,type,R-TYPE-005,,FIX,products,0,89,price null or not parseable as float64 or domain > 0 violated
+20260930T213843Z,2026-09-30T21:38:49+00:00,defect,R-TIME-001,TIME-01,FLAG,sales,493143,1040200,flagged by sale_before_launch
+20260930T213843Z,2026-09-30T21:38:50+00:00,defect,R-TIME-002,TIME-02,FLAG,warranty,2687,30000,flagged by claim_before_sale
+20260930T213843Z,2026-09-30T21:38:50+00:00,defect,R-DUP-001,DUP-01,FLAG,stores,12,75,flagged by duplicate_natural_key
+20260930T213843Z,2026-09-30T21:38:50+00:00,defect,R-DUP-002,DUP-02,FLAG,products,2,89,flagged by duplicate_natural_key

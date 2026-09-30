@@ -1,0 +1,111 @@
+contract_version: "1.0.0"
+built_from: reports/findings.csv
+policy:
+  dispositions: [FIX, FLAG, QUARANTINE]
+  principle: >
+    Raw data is immutable. Every row is fixed, flagged, or quarantined —
+    never silently deleted. Every action is logged with rule_id and row counts.
+
+conform_rules:
+  - rule_id: R-CNF-001
+    action: FIX
+    operation: rename_columns
+    evidence: "CNF-01: 9 columns across products/stores violate snake_case"
+    mapping:
+      products:
+        Product_ID: product_id
+        Product_Name: product_name
+        Category_ID: category_id
+        Launch_Date: launch_date
+        Price: price
+      stores:
+        Store_ID: store_id
+        Store_Name: store_name
+        City: city
+        Country: country
+
+  - rule_id: R-CNF-002
+    action: FIX
+    operation: strip_whitespace
+    evidence: "CNF-02 found 0 affected cells; applied defensively, log proves 0"
+    tables: [category, products, sales, stores, warranty]
+
+type_rules:
+  - rule_id: R-TYPE-001
+    table: sales
+    column: sale_date
+    to: datetime64
+    format: "%d-%m-%Y"
+    on_failure: QUARANTINE
+    evidence: "day-first proven: values like 16-06-2023 cannot be month-first"
+  - rule_id: R-TYPE-002
+    table: warranty
+    column: claim_date
+    to: datetime64
+    format: "%Y-%m-%d"
+    on_failure: QUARANTINE
+  - rule_id: R-TYPE-003
+    table: products
+    column: launch_date
+    to: datetime64
+    format: "%Y-%m-%d"
+    on_failure: QUARANTINE
+  - rule_id: R-TYPE-004
+    table: sales
+    column: quantity
+    to: int32
+    domain: ">= 1"
+    integral: true
+    on_failure: QUARANTINE
+  - rule_id: R-TYPE-005
+    table: products
+    column: price
+    to: float64
+    domain: "> 0"
+    on_failure: QUARANTINE
+
+defect_rules:
+  - rule_id: R-TIME-001
+    check_id: TIME-01
+    table: sales
+    action: FLAG
+    flag_column: is_pre_launch_sale
+    logic: sale_before_launch
+    rationale: >
+      47.4% of fact rows; both dates individually valid, conflict systemic
+      (likely launch_date semantics). Quarantining would destroy half the
+      fact table. Flag lets BI include/exclude deliberately.
+  - rule_id: R-TIME-002
+    check_id: TIME-02
+    table: warranty
+    action: FLAG
+    flag_column: is_claim_before_sale
+    logic: claim_before_sale
+    rationale: source truth unknowable from data alone; signal preserved.
+  - rule_id: R-DUP-001
+    check_id: DUP-01
+    table: stores
+    action: FLAG
+    flag_column: is_suspected_duplicate_store
+    logic: duplicate_natural_key
+    columns: [store_name, city]
+    rationale: >
+      6 pairs share name+city under different Store_IDs with independent
+      sales histories; no authoritative source confirms identity.
+  - rule_id: R-DUP-002
+    check_id: DUP-02
+    table: products
+    action: FLAG
+    flag_column: is_ambiguous_product_name
+    logic: duplicate_natural_key
+    columns: [product_name]
+    rationale: >
+      'HomePod mini' exists as P-21/Audio/438 and P-75/Smart Speaker/266;
+      conflicting attributes suggest distinct SKUs, not duplicates.
+
+dropped_rules:
+  - rule_id: R-DOM-005
+    reason: >
+      repair_status census showed exactly 4 canonical labels
+      (Completed / Pending / In Progress / Rejected); no mapping needed.
+      Profiling prevented a fix for a nonexistent defect.
