@@ -1,8 +1,8 @@
 check_id,check_name,before_clean,after_clean,flagged_after,unaccounted,status
 TIME-01,sale before product launch,493143,493143,493143,0,FLAGGED
 TIME-02,claim before sale,2687,2687,2687,0,FLAGGED
-DUP-01,duplicate stores on name + city,12,6,6,0,FLAGGED
-DUP-02,duplicate products on name,2,1,1,0,FLAGGED
+DUP-01,duplicate stores on name + city,12,12,12,0,FLAGGED
+DUP-02,duplicate products on name,2,2,2,0,FLAGGED
 ID-01,PK null/empty: sales.sale_id,0,0,0,0,CLEAN
 ID-02,PK duplicate: sales.sale_id,0,0,0,0,CLEAN
 FK-01,orphan sales.product_id -> products,0,0,0,0,CLEAN

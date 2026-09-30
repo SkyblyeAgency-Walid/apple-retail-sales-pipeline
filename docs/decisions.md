@@ -60,10 +60,16 @@ D2 Raw data is immutable; all repairs happen downstream, originals preserved.
 D3 Disposition policy: FIX / FLAG / QUARANTINE. Never silent DELETE.
 D5. Pre-launch sales → FLAG, never quarantine (47.4% of fact table; both dates individually valid).
 D6. Claims before sale → FLAG (source truth unknowable; signal preserved).
-D7. Duplicate stores (6 pairs) → FLAG, not merge: no authoritative source confirms identity; merging would fabricate certainty and silently remap sales FKs.
+D7. Duplicate stores (6 pairs) → FLAG, not merge: no authoritative source confirms identity; merging would       fabricate certainty and silently remap sales FKs.
 D8. HomePod mini pair → FLAG as ambiguous, retain both (conflicting attributes = distinct SKUs).
 D9. R-DOM-005 dropped — repair_status census proved no variants exist.
 D11. Contract dtypes are human aliases; engine resolves via DTYPE_ALIASES
      (e.g. datetime64 -> datetime64[ns]). Contract unchanged by engine bugs.
 D12. Unpinned pandas drifted us onto 3.x (unit-less datetime64 astype now a
      hard error). requirements.lock exists — all runs must use it.
+D17. unaccounted=0 proves internal consistency, not correctness: v1 clean-side
+     DUP counts used groups where raw used rows, and flagged==after made the
+     two wrong numbers agree with each other. Fix: unit-consistent row counts
+     + automated three-way crosscheck (profiler <-> MySQL raw <-> clean).
+     Also: rerunning a runner is not deploying a fix -- the artifact it
+     executes must contain the change.
