@@ -67,9 +67,17 @@ D11. Contract dtypes are human aliases; engine resolves via DTYPE_ALIASES
      (e.g. datetime64 -> datetime64[ns]). Contract unchanged by engine bugs.
 D12. Unpinned pandas drifted us onto 3.x (unit-less datetime64 astype now a
      hard error). requirements.lock exists — all runs must use it.
+D16. Audit metrics must be unit-consistent across before/after (rows, not
+     groups). v1 scorecard compared rows (raw) vs groups (clean) for DUP
+     checks; caught on first run, views corrected, scorecard regenerated
+     without reload. Lesson: a verdict can be right for the wrong reason.
 D17. unaccounted=0 proves internal consistency, not correctness: v1 clean-side
      DUP counts used groups where raw used rows, and flagged==after made the
      two wrong numbers agree with each other. Fix: unit-consistent row counts
      + automated three-way crosscheck (profiler <-> MySQL raw <-> clean).
      Also: rerunning a runner is not deploying a fix -- the artifact it
      executes must contain the change.
+D18. dim_date is materialized: calendar span exceeds MySQL default
+     cte_max_recursion_depth (1000); a CTE view would fail at query time.
+D19. Fact views expose contract flags — exclusion is the analyst's one-filter
+     decision at query time, never a pre-deletion in the pipeline.

@@ -1,0 +1,17 @@
+query,is_pre_launch_sale,rows_cnt,revenue,category_name,units,repair_status,claims,avg_days_to_claim
+flagged_revenue_split,1.0,493143.0,2834906410.0,,,,,
+flagged_revenue_split,0.0,547057.0,3331386620.0,,,,,
+revenue_by_category,,117142.0,953443623.0,Tablet,645303.0,,,
+revenue_by_category,,163849.0,927115953.0,Accessories,899734.0,,,
+revenue_by_category,,151636.0,865147932.0,Smartphone,834006.0,,,
+revenue_by_category,,128731.0,794980579.0,Audio,707354.0,,,
+revenue_by_category,,116369.0,763382551.0,Laptop,640336.0,,,
+revenue_by_category,,105521.0,667537447.0,Wearable,582445.0,,,
+revenue_by_category,,116812.0,538481345.0,Desktop,642140.0,,,
+revenue_by_category,,81561.0,368463489.0,Subscription Service,447062.0,,,
+revenue_by_category,,35014.0,191622603.0,Streaming Device,192534.0,,,
+revenue_by_category,,23565.0,96117508.0,Smart Speaker,130430.0,,,
+warranty_by_status,,,,,,Rejected,6706.0,803.1
+warranty_by_status,,,,,,Pending,6882.0,809.0
+warranty_by_status,,,,,,Completed,6790.0,810.2
+warranty_by_status,,,,,,In Progress,6935.0,821.5
