@@ -5,3 +5,7 @@ data/interim/
 data/quarantine/
 __pycache__/~$*
 Thumbs.db
+src/__pycache__/
+*.pyc
+powerquery/Apple_Retail_PowerQuery_Recipe.xlsx
+data/raw/

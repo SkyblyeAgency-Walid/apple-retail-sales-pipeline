@@ -115,7 +115,7 @@ apple-retail-sales-pipeline/
 +-- powerquery/
     +-- recipe.md                # rerunnable recipe + verification gates
     +-- m/*.pq                   # all 19 M scripts, reviewable without Excel
-    +-- Apple_Retail_PowerQuery_Recipe.xlsx
+    +-- Apple_Retail_PowerQuery_Recipe.xlsx   # 183MB with Data Model - kept local; rebuild from recipe.md in ~10 min
 ```
 
 ## How to run
@@ -136,7 +136,7 @@ python -m src.reconcile
 
 # 4. MySQL (8.0.16+) - local install or:
 #      docker run --name mysql-apple -e MYSQL_ROOT_PASSWORD=<pw> -p 3306:3306 -d mysql:8.4
- $env:MYSQL_USER = "root"; $env:MYSQL_PASSWORD = "<pw>"
+ $env:MYSQL_USER = "apple_etl"   # least-privilege pipeline account; root is admin-only; $env:MYSQL_PASSWORD = "<pw>"
 python -m src.load_mysql          # DDL, load, views, verification, scorecard
 python -m scripts.refresh_audit   # regenerate views + 3-way profiler crosscheck
 python -m scripts.build_bi        # dim_date, BI views, tie-out vs clean parquet
@@ -192,3 +192,4 @@ Great Expectations or dbt tests replacing the custom check layer; Airflow orches
 
 **Data:** `data/raw/` is not committed (regenerable); MD5 checksums in `data/raw/checksums.md5`. Source CSVs: [FILL-ME: exact Kaggle dataset URL]
 **Author:** [FILL-ME: your name] | [FILL-ME: LinkedIn/portfolio URL]
+

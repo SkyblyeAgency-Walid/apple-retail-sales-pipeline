@@ -121,3 +121,19 @@ after commit; corrections get a new entry that references the old one.
 - D21. The Power Query recipe is a portability demonstration; the Python
   engine remains the source of truth. Where the two disagree, the engine
   wins and the workbook is corrected.
+
+- D22. A real password was found committed as a default parameter in src/db.py
+  (and in compiled __pycache__ bytecode). Caught by the pre-push secrets gate,
+  BEFORE any public push. Remediation: fail-fast credential handling (no
+  defaults), __pycache__ and the 183MB workbook removed from tracking, history
+  rewritten with git filter-repo (secret string replaced, large artifacts
+  purged), password rotated. Rule: credentials live in environment variables
+  only - never in code, never in history.
+
+- D23. Least-privilege database access: the pipeline authenticates as a
+  dedicated apple_etl account scoped to apple_raw.* and apple_clean.* only
+  (SELECT, INSERT, CREATE, DROP, INDEX, ALTER, CREATE VIEW, REFERENCES).
+  No UPDATE/DELETE grants - the account physically cannot mutate stored rows,
+  mirroring the append-only load design. Root remains admin-only with its own
+  rotated password. Schemas pre-created by root so the pipeline holds no
+  global CREATE. Verified by negative tests (CREATE DATABASE / DELETE denied).
