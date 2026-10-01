@@ -155,7 +155,7 @@ Before: everything `varchar`, every relationship annotated *assumed - unvalidate
 
 ## Scorecard (the audit artifact)
 
-![scorecard](docs/scorecard_final.png)
+![scorecard](docs/Load_Data_3_Fixed.png)
 
 13 checks run against both schemas. Every violation is either eliminated (0) or carried as a contract flag - `unaccounted = 0` everywhere, cross-checked against the pandas profiler.
 
