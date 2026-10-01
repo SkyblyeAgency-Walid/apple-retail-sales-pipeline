@@ -1,5 +1,3 @@
--- Clean schema: typed, PK/FK/CHECK. MySQL now ENFORCES the rules contract:
--- a row violating these constraints is physically rejected at load time.
 CREATE SCHEMA IF NOT EXISTS apple_clean;
 
 CREATE TABLE IF NOT EXISTS apple_clean.category (

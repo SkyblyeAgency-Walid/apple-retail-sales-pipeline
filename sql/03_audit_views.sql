@@ -1,20 +1,3 @@
--- ============================================================================
--- 03_audit_views.sql — v1.1
--- Audit tool. Identical 13-check set against both schemas:
---   apple_raw.vw_audit   : casts VARCHAR on the fly (defensive by design)
---   apple_clean.vw_audit : typed columns; 'flagged' counts rows already
---                          carrying a contract flag (FLAG = retained defect)
---
--- Unit rule (D17): every check counts ROWS, never groups. v1.0 counted
--- duplicate GROUPS on the clean side (6) vs ROWS on the raw side (12);
--- flagged==after masked the mismatch. Fixed in v1.1.
---
--- Scorecard is produced programmatically (src.load_mysql.scorecard ->
--- reports/audit_scorecard.csv) and cross-validated against the pandas
--- profiler (scripts/refresh_audit.py). The trailing SELECT is the same
--- join, kept here for ad-hoc console use.
--- ============================================================================
-
 CREATE OR REPLACE VIEW apple_raw.vw_audit AS
 SELECT 'ID-01' AS check_id, 'PK null/empty: sales.sale_id' AS check_name,
        SUM(sale_id IS NULL OR sale_id = '') AS violations, 0 AS flagged
@@ -139,9 +122,7 @@ SELECT 'TIME-03', 'sale_date in the future',
        SUM(sale_date > CURDATE()), 0
 FROM apple_clean.sales
 UNION ALL
--- v1.1 FIX (D17): count ROWS, not groups. Each duplicate group contributes
--- all of its rows (cnt), so 6 flagged pairs -> 12 rows, matching the raw
--- side and the pandas profiler exactly.
+
 SELECT 'DUP-01', 'duplicate stores on name + city',
        SUM(CASE WHEN cnt > 1 THEN cnt ELSE 0 END),
        SUM(CASE WHEN cnt > 1 AND grp_flag = 1 THEN cnt ELSE 0 END)
