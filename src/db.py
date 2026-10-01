@@ -1,5 +1,3 @@
-﻿"""MySQL connection factory. Credentials from environment -- never committed.
-D22: no default password, ever. Missing env vars = hard stop."""
 import os
 from urllib.parse import quote_plus
 
