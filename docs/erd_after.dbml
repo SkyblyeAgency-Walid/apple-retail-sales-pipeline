@@ -1,9 +1,13 @@
-// AFTER — the model we PROVED: types validated by profiler, enforced by DDL,
+// AFTER - the model we PROVED: types validated by profiler, enforced by DDL,
 // reconciled to zero variance, audited with 0 unaccounted violations.
+// DBML syntax notes: multi-word types must be quoted; relationships use
+// Ref blocks (bottom) - renders identically to inline refs, parses everywhere.
+
 Table category {
   category_id varchar [pk]
   category_name varchar [not null]
 }
+
 Table stores {
   store_id varchar [pk]
   store_name varchar [not null]
@@ -11,29 +15,33 @@ Table stores {
   country varchar [not null]
   is_suspected_duplicate_store tinyint [not null, note: 'R-DUP-001 flag: 6 pairs / 12 rows']
 }
+
 Table products {
   product_id varchar [pk]
   product_name varchar [not null]
-  category_id varchar [not null, ref: > category.category_id]
+  category_id varchar [not null]
   launch_date date [not null]
   price decimal(12,2) [not null, note: 'CHECK price > 0']
   is_ambiguous_product_name tinyint [not null, note: 'R-DUP-002 flag: HomePod mini x2']
 }
+
 Table sales {
   sale_id varchar [pk]
   sale_date date [not null]
-  store_id varchar [not null, ref: > stores.store_id]
-  product_id varchar [not null, ref: > products.product_id]
-  quantity smallint unsigned [not null, note: 'CHECK >= 1; census 1-10']
+  store_id varchar [not null]
+  product_id varchar [not null]
+  quantity smallint [not null, note: 'unsigned; CHECK >= 1; census 1-10']
   is_pre_launch_sale tinyint [not null, note: 'R-TIME-001 flag: 493,143 rows = 45.97% of revenue']
 }
+
 Table warranty {
   claim_id varchar [pk]
   claim_date date [not null]
-  sale_id varchar [not null, ref: > sales.sale_id]
+  sale_id varchar [not null]
   repair_status varchar [not null, note: 'CHECK: canonical 4 labels']
   is_claim_before_sale tinyint [not null, note: 'R-TIME-002 flag: 2,687 rows']
 }
+
 Table dim_date {
   date_key int [pk]
   full_date date [unique, not null]
@@ -44,3 +52,8 @@ Table dim_date {
   weekday_name varchar
   is_weekend tinyint
 }
+
+Ref: products.category_id > category.category_id
+Ref: sales.store_id > stores.store_id
+Ref: sales.product_id > products.product_id
+Ref: warranty.sale_id > sales.sale_id
