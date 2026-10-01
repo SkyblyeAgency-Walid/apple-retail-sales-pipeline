@@ -191,7 +191,5 @@ Great Expectations or dbt tests replacing the custom check layer; Airflow orches
 
 ---
 
-**Data:** `data/raw/` is not committed (regenerable); MD5 checksums in `data/raw/checksums.md5`. Source CSVs: [FILL-ME: exact Kaggle dataset URL]
-**Author:** [FILL-ME: your name] | [FILL-ME: LinkedIn/portfolio URL]
-
-
+**Data:** `data/raw/` is not committed (regenerable); MD5 checksums in `data/raw/checksums.md5`. Source CSVs: [FILL-ME: https://www.kaggle.com/datasets/amangarg08/apple-retail-sales-dataset]
+**Author:** [Walid_Chibi] | [https://www.upwork.com/freelancers/~0146fc161140418dd2?mp_source=share]

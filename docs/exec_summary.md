@@ -1,7 +1,7 @@
 ﻿# Executive Summary
 ## Apple Retail Sales - Data Quality & Reconciliation
 
-**Date:** 2026-09-30 | **Author:** [FILL-ME: your name]
+**Date:** 2026-09-30 | **Author:** [Walid_Chibi]
 
 **Headline.** Five retail sources totalling 1,070,374 records - including 1,040,200 sales rows - were audited with 96 automated checks before any cleaning. Six defect classes were found; the largest is systemic: 493,143 sales (47.4%) are dated before their product's launch, and those rows carry 45.97% of $6.17B gross revenue. Every defect was dispositioned under a versioned rules contract (FIX / FLAG / QUARANTINE - never delete), and the pipeline reconciles rows, units and revenue to $0.00 unexplained variance - verified by four independent engines: two pandas implementations, MySQL SQL audits, and a Power Query port.
 
