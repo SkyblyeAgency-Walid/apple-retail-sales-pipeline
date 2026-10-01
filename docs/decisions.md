@@ -81,3 +81,4 @@ D18. dim_date is materialized: calendar span exceeds MySQL default
      cte_max_recursion_depth (1000); a CTE view would fail at query time.
 D19. Fact views expose contract flags — exclusion is the analyst's one-filter
      decision at query time, never a pre-deletion in the pipeline.
+D20. Excel recipe: sales loads to Data Model (worksheet ceiling 1,048,576 vs 1,040,200 rows = 8,376 headroom); dims/audit/reconciliation to worksheets. D21. PQ recipe is a portability demonstration; Python engine is source of truth.
