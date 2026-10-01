@@ -1,3 +1,5 @@
+﻿# Decisions & Rationale - Apple Retail Sales Pipeline
+
 ======================================================================
 category.csv  |  rows: 10  |  memory: 0.0 MB
 columns: ['category_id', 'category_name']
@@ -53,32 +55,69 @@ repair_status    str
 0  CL-58750  2024-01-30    YG-8782     Completed
 1   CL-8874  2024-06-25  QX-999001       Pending
 2  CL-14486  2024-08-13   JG-46890       Pending
+======================================================================
 
 
-D1. Column naming target standard: lowercase snake_case (source is mixed-case: Product_ID vs sale_id).
-D2 Raw data is immutable; all repairs happen downstream, originals preserved.
-D3 Disposition policy: FIX / FLAG / QUARANTINE. Never silent DELETE.
-D5. Pre-launch sales → FLAG, never quarantine (47.4% of fact table; both dates individually valid).
-D6. Claims before sale → FLAG (source truth unknowable; signal preserved).
-D7. Duplicate stores (6 pairs) → FLAG, not merge: no authoritative source confirms identity; merging would       fabricate certainty and silently remap sales FKs.
-D8. HomePod mini pair → FLAG as ambiguous, retain both (conflicting attributes = distinct SKUs).
-D9. R-DOM-005 dropped — repair_status census proved no variants exist.
-D11. Contract dtypes are human aliases; engine resolves via DTYPE_ALIASES
-     (e.g. datetime64 -> datetime64[ns]). Contract unchanged by engine bugs.
-D12. Unpinned pandas drifted us onto 3.x (unit-less datetime64 astype now a
-     hard error). requirements.lock exists — all runs must use it.
-D16. Audit metrics must be unit-consistent across before/after (rows, not
-     groups). v1 scorecard compared rows (raw) vs groups (clean) for DUP
-     checks; caught on first run, views corrected, scorecard regenerated
-     without reload. Lesson: a verdict can be right for the wrong reason.
-D17. unaccounted=0 proves internal consistency, not correctness: v1 clean-side
-     DUP counts used groups where raw used rows, and flagged==after made the
-     two wrong numbers agree with each other. Fix: unit-consistent row counts
-     + automated three-way crosscheck (profiler <-> MySQL raw <-> clean).
-     Also: rerunning a runner is not deploying a fix -- the artifact it
-     executes must contain the change.
-D18. dim_date is materialized: calendar span exceeds MySQL default
-     cte_max_recursion_depth (1000); a CTE view would fail at query time.
-D19. Fact views expose contract flags — exclusion is the analyst's one-filter
-     decision at query time, never a pre-deletion in the pipeline.
-D20. Excel recipe: sales loads to Data Model (worksheet ceiling 1,048,576 vs 1,040,200 rows = 8,376 headroom); dims/audit/reconciliation to worksheets. D21. PQ recipe is a portability demonstration; Python engine is source of truth.
+Decision log (append-only). One decision per entry. Entries are never edited
+after commit; corrections get a new entry that references the old one.
+
+- D1. Column naming target standard: lowercase snake_case. Source mixes
+  Product_ID vs sale_id; conform at ingest into the clean schema, originals
+  preserved in the raw schema.
+- D2. Raw data is immutable; all repairs happen downstream, originals
+  preserved (raw CSVs checksummed, MySQL raw schema as-landed).
+- D3. Disposition policy: FIX / FLAG / QUARANTINE - never silent DELETE.
+  Every row is accounted for: clean + quarantined + variance = raw.
+- D4. PK gap check dropped: IDs are prefixed strings (P-1, YG-8782, ST-1),
+  not sequential integers; duplicates are covered by check ID-02.
+- D5. Pre-launch sales (TIME-01, 493,143 rows = 47.4%) -> FLAG, never
+  quarantine. Both dates are individually valid; the conflict is systemic.
+  Quarantining would destroy half the fact table; the flag lets BI
+  include/exclude deliberately with one filter.
+- D6. Claims before sale (TIME-02, 2,687 rows) -> FLAG. Source truth is
+  unknowable from the data alone; the signal is preserved.
+- D7. Duplicate stores (DUP-01, 6 pairs = 12 of 75 rows) -> FLAG, not merge.
+  No authoritative source confirms identity; merging would fabricate
+  certainty and silently remap sales FKs to an assumed survivor.
+- D8. HomePod mini pair (DUP-02) -> FLAG as ambiguous, retain both SKUs.
+  Conflicting category/price imply distinct products; report by product_id,
+  never by name.
+- D9. R-DOM-005 (repair_status label mapping) dropped: the value census
+  showed exactly 4 canonical labels. Profiling prevented a fix for a
+  nonexistent defect.
+- D10. An empty quarantine folder is the CORRECT outcome, not an omission:
+  the profiler already proved parse/domain cleanliness; the quarantine path
+  exists so tomorrow's dirty data fails safely instead of corrupting outputs.
+- D11. Contract dtypes are human aliases; the engine resolves them via
+  DTYPE_ALIASES (datetime64 -> datetime64[ns]). The signed-off contract is
+  never bent to implementation quirks; engine bugs are fixed in the engine.
+- D12. Unpinned pandas drifted to 3.x (unit-less datetime64 astype is now a
+  hard error). requirements.lock exists; all runs must use it.
+- D13. The raw schema is constraint-free by design: constraints are
+  assertions of the clean contract and belong in apple_clean only.
+- D14. FOREIGN_KEY_CHECKS=0 is used only for truncate (rerunnability),
+  never for load.
+- D15. to_sql(method=multi, chunksize=1000) is fine at local scale;
+  LOAD DATA INFILE is the production-scale alternative.
+- D16. Audit metrics must be unit-consistent across before/after (rows,
+  never groups). The v1 scorecard compared rows (raw) vs groups (clean) for
+  the DUP checks; caught on first run, views corrected, scorecard
+  regenerated without a data reload.
+- D17. unaccounted=0 proves internal consistency, not correctness: the v1
+  clean-side counts were wrong in a way that matched the flagged count, so
+  the two wrong numbers agreed. Fix: unit-consistent row counts plus an
+  automated three-way crosscheck (pandas profiler <-> MySQL raw <->
+  MySQL clean). Corollary: rerunning a runner is not deploying a fix - the
+  artifact it executes must contain the change.
+- D18. dim_date is materialized, not a view: the calendar span exceeds
+  MySQL's default cte_max_recursion_depth (1000), so a recursive-CTE view
+  would fail at query time.
+- D19. Fact views expose the contract flags: exclusion of flagged rows is
+  the analyst's one-filter decision at query time, never a pre-deletion in
+  the pipeline.
+- D20. Power Query workbook: sales loads to the Data Model (worksheet
+  ceiling 1,048,576 vs 1,040,200 rows = 8,376 rows of headroom); dims,
+  audit and reconciliation load to worksheets.
+- D21. The Power Query recipe is a portability demonstration; the Python
+  engine remains the source of truth. Where the two disagree, the engine
+  wins and the workbook is corrected.
