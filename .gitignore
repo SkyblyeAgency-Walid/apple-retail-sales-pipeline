@@ -1,11 +1,19 @@
+﻿# local environments
 .venv/
-data/raw/        # regenerable; checksums + download link live in README
+
+# python bytecode
+__pycache__/
+*.pyc
+
+# office / editor lock files
+~$*
+Thumbs.db
+
+# data is regenerable (download link in README); checksums.md5 is force-added
+data/raw/
 data/clean/
 data/interim/
 data/quarantine/
-__pycache__/~$*
-Thumbs.db
-src/__pycache__/
-*.pyc
+
+# 183MB workbook with Data Model - kept local; rebuild via powerquery/recipe.md
 powerquery/Apple_Retail_PowerQuery_Recipe.xlsx
-data/raw/
